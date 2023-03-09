@@ -15,19 +15,19 @@
 import Vuex from "vuex";
 import axios from "axios";
 
-export default new Vuex.Store({
+export default Vuex.createStore({
   state: {
     message: "",
   },
   getters: {
     getMessage: (state) => {
-      console.log(state.message)
+      // console.log(state.message)
       return state.message;
     },
   },
   mutations: {
     setMessage: (state, payload) => {
-      console.log(payload)
+      // console.log(payload)
       state.message = payload.message;
     },
   },

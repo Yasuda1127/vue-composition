@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-</script>
-
 <template>
   <div class="bg-white py-6 sm:py-8 lg:py-12" v-bind:key="item.id">
     <div class="max-w-screen-xl px-4 md:px-8 mx-auto">
@@ -174,7 +170,9 @@ import { RouterLink, RouterView } from "vue-router";
 
 <script>
 import axios from "axios";
-// import { Item } from "../../types/type";
+import { RouterLink, RouterView } from "vue-router";
+import { ref, onMounted } from "vue";
+import router from "@/router";
 
 export default {
   data() {
@@ -194,12 +192,11 @@ export default {
         .get(`http://localhost:8002/items/${this.$route.params.id}`)
         .then((response) => {
           this.item = response.data;
-          this.priceCalc = this.item.prices
+          this.priceCalc = this.item.prices;
           console.log(this.item.prices);
         });
     },
     cartAdd: function () {
-      // const vm = this;
       const user = document.cookie;
       const userId = user.slice(3);
       console.log(userId);
@@ -219,7 +216,6 @@ export default {
 
       axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
         let u = response.data;
-        // console.log(u);
         this.$router.push({ path: "/CartItems" });
       });
     },
@@ -227,17 +223,12 @@ export default {
       this.count++;
       console.log(this.item.prices);
       this.priceCalc = this.priceCalc + this.item.prices;
-      // this.item.priceCalc = this.item.prices * this.count;
-      // console.log(this.item.priceCalc);
     },
     clickHandlerPrev: function () {
-      // this.counter--;
       if (this.count > 1) {
         this.count--;
         console.log(this.item.prices);
         this.priceCalc = this.priceCalc - this.item.prices;
-        // this.item.priceCalc = this.item.prices * this.count;
-        // console.log(this.item.priceCalc);
       }
     },
   },

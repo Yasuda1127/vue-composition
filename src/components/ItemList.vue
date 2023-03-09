@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-</script>
-
 <template>
   <div id="app"></div>
   <div class="bg-white">
@@ -42,47 +38,34 @@ import { RouterLink, RouterView } from "vue-router";
   </div>
 </template>
 
-<script>
-import axios from "axios";
-// import { ref, reactive } from "vue";
-// import store from "@/store";
-// import { Item } from "../../types/type";
+<script setup>
+// import axios from "axios";
+import { RouterLink, RouterView } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
+// import router from "@/router";
 
-export default {
-  data() {
-    return {
-      products: "products",
-    };
-  },
-  created() {
-    // this.itemDetail();
-    this.item();
-  },
-  methods: {
-    // itemDisplay: function () {
-    //   const vm = this;
-    //   axios.get("http://localhost:8002/items").then((response) => {
-    //     vm.products = response.data;
-    //     console.log(vm.products);
-    //   });
-    // },
-    // itemDetail: function () {
-    //   const vm = this;
-    //   if (this.item.id) {
-    //     axios
-    //       .get(`http://localhost:8002/items/${this.$route.params.id}`)
-    //       .then((response) => {
-    //         vm.item = response.data;
-    //         console.log(response.data);
-    //       });
-    //   }
-    // },
-    item: function () {
-      this.$store.dispatch("getMessageAction");
-    },
-  },
-  // get message() {
-  //   return this.$store.getters.getMessage();
-  // },
-};
+const store = useStore();
+const data = ref(store.dispatch("getMessageAction"));
+
+onMounted(() => {
+  data;
+});
+
+// export default {
+//   data() {
+//     return {
+//       products: "products",
+//     };
+//   },
+//   created() {
+//     // this.itemDetail();
+//     this.item();
+//   },
+//   methods: {
+//     item: function () {
+//       this.$store.dispatch("getMessageAction");
+//     },
+//   },
+// };
 </script>
