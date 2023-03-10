@@ -172,7 +172,66 @@
 import axios from "axios";
 import { RouterLink, RouterView } from "vue-router";
 import { ref, onMounted } from "vue";
-import router from "@/router";
+import {useRouter} from "vue-router";
+
+// const item = ref("item");
+// const userId = ref(Number(""));
+// const count = ref(1);
+// const price = "price";
+// const router = useRouter()
+
+// onMounted(() => {
+//   itemDetail();
+// });
+
+// function itemDetail() {
+//   item.value = axios
+//     .get(`http://localhost:8002/items/${router.params.id}`)
+//     .then((response) => {
+//       console.log(response.data);
+//       // this.priceCalc = this.item.prices;
+//       // console.log(this.item.prices);
+//     });
+// }
+
+// function cartAdd() {
+//   const user = document.cookie;
+//   const userId = user.slice(3);
+//   console.log(userId);
+//   const carts = {
+//     userId: Number(userId),
+//     imageUrl: this.item.imageUrl,
+//     name: this.item.name,
+//     category: this.item.category,
+//     flavor: this.item.flavor,
+//     price: this.item.price,
+//     priceCalc: this.priceCalc,
+//     description: this.item.description,
+//     content: this.item.content,
+//     countity: this.count,
+//     deleted: false,
+//   };
+
+//   axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
+//     let u = response.data;
+//     console.log(u);
+//     router.push({ path: "/CartItems" });
+//   });
+// }
+
+// function clickHandlerNext() {
+//   this.count++;
+//   console.log(this.item.prices);
+//   this.priceCalc = this.priceCalc + this.item.prices;
+// }
+
+// function clickHandlerPrev() {
+//   if (this.count > 1) {
+//     this.count--;
+//     console.log(this.item.prices);
+//     this.priceCalc = this.priceCalc - this.item.prices;
+//   }
+// }
 
 export default {
   data() {

@@ -1,40 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
-</script>
-
-<script lang="ts">
-import axios from "axios";
-// import VueCookie from 'vue-cookie';
-// Vue.use(VueCookie);
-export default {
-  data() {
-    return {
-      user: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        postCode: "",
-        region: "",
-        city: "",
-        streetAddress: "",
-      },
-    };
-  },
-  methods: {
-    createUser: function () {
-      const vm = this;
-      axios.post("http://localhost:8002/users", vm.user).then((response) => {
-        let u = response.data;
-        console.log(u);
-        // this.$router.push({ name: 'UserDetailPage', params: { id: u.id } });
-      });
-    },
-  },
-};
-</script>
 <template>
   <div class="mt-10 sm:mt-20">
     <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -201,3 +164,59 @@ export default {
     </div>
   </div>
 </template>
+
+<script setup>
+import axios from "axios";
+import { useCookies } from "vue3-cookies";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const user = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  postCode: "",
+  region: "",
+  city: "",
+  streetAddress: "",
+});
+
+
+function createUser() {
+  axios.post("http://localhost:8002/users", user.value).then((response) => {
+    let u = response.data;
+    console.log(u);
+    router.push({ path: "/" });
+  });
+}
+
+// export default {
+//   data() {
+//     return {
+//       user: {
+//         firstName: "",
+//         lastName: "",
+//         email: "",
+//         password: "",
+//         postCode: "",
+//         region: "",
+//         city: "",
+//         streetAddress: "",
+//       },
+//     };
+//   },
+//   methods: {
+//     createUser: function () {
+//       const vm = this;
+//       axios.post("http://localhost:8002/users", vm.user).then((response) => {
+//         let u = response.data;
+//         console.log(u);
+//         // this.$router.push({ name: 'UserDetailPage', params: { id: u.id } });
+//       });
+//     },
+//   },
+// };
+</script>

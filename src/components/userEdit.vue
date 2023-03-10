@@ -166,38 +166,66 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-// import VueCookie from 'vue-cookie';
-// Vue.use(VueCookie);
-export default {
-  data() {
-    return {
-      user: "user",
-    };
-  },
-  mounted() {
-    this.userInfo();
-  },
-  methods: {
-    userInfo: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      axios
-        .get("http://localhost:8002/users/" + "?" + "id" + "=" + userId)
-        .then((response) => {
-          this.user = response.data[0];
-          console.log(this.user);
-        });
-    },
-    userEdit: function (user) {
-      let id = user.id;
-      axios
-        .patch(`http://localhost:8002/users/` + id, this.user)
-        .then((response) => {
-          console.log(response.data);
-        });
-    },
-  },
-};
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const user = ref("user");
+
+onMounted(() => {
+  userInfo();
+});
+
+function userInfo() {
+  const user1 = document.cookie;
+  const userId = user1.slice(3);
+  axios
+    .get("http://localhost:8002/users/" + "?" + "id" + "=" + userId)
+    .then((response) => {
+      response.data = response.data[0];
+      user.value = response.data;
+    });
+}
+function userEdit(user) {
+  let id = user.id;
+  axios
+    .patch(`http://localhost:8002/users/` + id, this.user)
+    .then((response) => {
+      console.log(response.data);
+    });
+}
+// import axios from "axios";
+// export default {
+//   data() {
+//     return {
+//       user: "user",
+//     };
+//   },
+//   mounted() {
+//     this.userInfo();
+//   },
+//   methods: {
+//     userInfo: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       axios
+//         .get("http://localhost:8002/users/" + "?" + "id" + "=" + userId)
+//         .then((response) => {
+//           this.user = response.data[0];
+//           console.log(this.user);
+//         });
+//     },
+//     userEdit: function (user) {
+//       let id = user.id;
+//       axios
+//         .patch(`http://localhost:8002/users/` + id, this.user)
+//         .then((response) => {
+//           console.log(response.data);
+//         });
+//     },
+//   },
+// };
 </script>
