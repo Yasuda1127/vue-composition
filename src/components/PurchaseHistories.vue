@@ -32,38 +32,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-// import { Item } from "../../types/type";
+import { useCookies } from "vue3-cookies";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      purchaseHistories: "purchaseHistories",
-      item: "item",
-    };
-  },
-  mounted() {
-    this.purchaseHis();
-  },
-  methods: {
-    purchaseHis: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      axios
-        .get(
-          `http://localhost:8002/purchaseHistories/` +
-            "?" +
-            "userId" +
-            "=" +
-            userId
-        )
-        .then((response) => {
-          // console.log(response);
-          this.purchaseHistories = response.data;
-          console.log(this.purchaseHistories);
-        });
-    },
-  },
-};
+const router = useRouter();
+
+const purchaseHistories = ref("purchaseHistories");
+const item = ref("item");
+
+onMounted(() => {
+  purchaseHis();
+});
+
+function purchaseHis() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  axios
+    .get(
+      `http://localhost:8002/purchaseHistories/` + "?" + "userId" + "=" + userId
+    )
+    .then((response) => {
+      // console.log(response);
+      purchaseHistories.value = response.data;
+      console.log(purchaseHistories.value);
+    });
+}
+
+// export default {
+//   data() {
+//     return {
+//       purchaseHistories: "purchaseHistories",
+//       item: "item",
+//     };
+//   },
+//   mounted() {
+//     this.purchaseHis();
+//   },
+//   methods: {
+//     purchaseHis: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       axios
+//         .get(
+//           `http://localhost:8002/purchaseHistories/` +
+//             "?" +
+//             "userId" +
+//             "=" +
+//             userId
+//         )
+//         .then((response) => {
+//           // console.log(response);
+//           this.purchaseHistories = response.data;
+//           console.log(this.purchaseHistories);
+//         });
+//     },
+//   },
+// };
 </script>

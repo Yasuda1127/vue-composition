@@ -54,7 +54,7 @@
       "id": 1
     },
     {
-      "userId": null,
+      "userId": 2,
       "imageUrl": "/images/impact_whey_aisolate.jpg",
       "name": "Impact ホエイ アイソレート",
       "category": "whey",
@@ -64,28 +64,32 @@
         "ミルクティー"
       ],
       "price": 4390,
-      "priceCalc": 4390,
+      "priceCalc": 8780,
       "description": "食あたりタンパク質を23g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。生乳から必要な成分を精製蒸留した後に乾燥。100%天然由来の商品です。3種類の味からお選びください。",
       "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 0.6g, タンパク質: 23g, 食塩相当量: 0.13g",
-      "countity": 1,
-      "deleted": false,
+      "countity": 2,
+      "deleted": true,
       "id": 2
-    },
+    }
+  ],
+  "purchaseConf": [
     {
       "userId": 2,
-      "imageUrl": "/images/impact_whey_stroberry.jpg",
-      "name": "Impact ホエイ プロテイン-ストロベリーヨーグルトフレーバー",
+      "imageUrl": "/images/impact_whey_aisolate.jpg",
+      "name": "Impact ホエイ アイソレート",
       "category": "whey",
       "flavor": [
-        "ヨーグルト-ストロベリー-"
+        "チョコ",
+        "ストロベリー",
+        "ミルクティー"
       ],
-      "price": 1990,
-      "priceCalc": 5970,
-      "description": "味覚を満足させてくれる、美味しいストロベリー ヨーグルトフレーバーのImpact ホエイ プロテインが、期間限定で登場!タンパク質（1食あたり18g）と必須アミノ酸を含有する特別フォーミュラです。ジム通いに熱心な方や、健康維持を目指す方など、どんなフィットネス目標をお持ちでも身体への栄養補給をサポートします。",
-      "content": "エネルギー（1食あたり）: 91kcal, 脂質: 1.2g, 炭水化物: 2.1g, タンパク質: 18g, 食塩相当量: 0.14g",
-      "countity": 3,
-      "deleted": false,
-      "id": 3
+      "price": 4390,
+      "priceCalc": 8780,
+      "description": "食あたりタンパク質を23g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。生乳から必要な成分を精製蒸留した後に乾燥。100%天然由来の商品です。3種類の味からお選びください。",
+      "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 0.6g, タンパク質: 23g, 食塩相当量: 0.13g",
+      "countity": 2,
+      "deleted": true,
+      "id": 2
     },
     {
       "userId": 2,
@@ -102,12 +106,29 @@
       "description": "1食あたりタンパク質を21g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。乳牛の乳から必要な成分を精製蒸留した後に乾燥。3種類のフレーバーからお選びください。",
       "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 1.0g, タンパク質: 21g, 食塩相当量: 0.13g",
       "countity": 1,
-      "deleted": false,
-      "id": 4
+      "deleted": true,
+      "id": 1
     }
   ],
-  "purchaseConf": [],
   "purchaseHistories": [
+    {
+      "userId": 2,
+      "imageUrl": "/images/impact_whey_aisolate.jpg",
+      "name": "Impact ホエイ アイソレート",
+      "category": "whey",
+      "flavor": [
+        "チョコ",
+        "ストロベリー",
+        "ミルクティー"
+      ],
+      "price": 4390,
+      "priceCalc": 8780,
+      "description": "食あたりタンパク質を23g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。生乳から必要な成分を精製蒸留した後に乾燥。100%天然由来の商品です。3種類の味からお選びください。",
+      "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 0.6g, タンパク質: 23g, 食塩相当量: 0.13g",
+      "countity": 2,
+      "deleted": true,
+      "id": 2
+    },
     {
       "userId": 2,
       "imageUrl": "/images/impact_whey_protein.jpg",

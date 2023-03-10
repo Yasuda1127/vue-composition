@@ -94,42 +94,78 @@
 // import VueCookies from "vue3-cookies";
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      user: {
-        email: "",
-        password: "",
-      },
-    };
-  },
-  methods: {
-    signin: function () {
-      const vm = this;
-      axios
-        .get(
-          "http://localhost:8002/users/" +
-            "?" +
-            "email" +
-            "=" +
-            vm.user.email +
-            "&" +
-            "password" +
-            "=" +
-            vm.user.password
-        )
-        .then((response) => {
-          let u = response.data;
-          console.log(u);
-          let id = u[0].id;
-          console.log(id)
-          const { cookies } = useCookies();
-          cookies.set("id", id);
-          location.reload();
-        })
-        .then(this.$router.push({ path: "/" }));
-    },
-  },
-};
+// const user = ref("");
+// const password = ref("");
+const router = useRouter()
+const user = ref({
+  email: "",
+  password: "",
+});
+
+function signin() {
+  axios
+    .get(
+      "http://localhost:8002/users/" +
+        "?" +
+        "email" +
+        "=" +
+        user.value.email +
+        "&" +
+        "password" +
+        "=" +
+        user.value.password
+    )
+    .then((response) => {
+      let u = response.data;
+      console.log(u);
+      let id = u[0].id;
+      console.log(id);
+      const { cookies } = useCookies();
+      cookies.set("id", id);
+      location.reload();
+    })
+    .then(router.push({ path: "/" }));
+}
+
+
+// export default {
+//   data() {
+//     return {
+//       user: {
+//         email: "",
+//         password: "",
+//       },
+//     };
+//   },
+//   methods: {
+//     signin: function () {
+//       const vm = this;
+//       axios
+//         .get(
+//           "http://localhost:8002/users/" +
+//             "?" +
+//             "email" +
+//             "=" +
+//             vm.user.email +
+//             "&" +
+//             "password" +
+//             "=" +
+//             vm.user.password
+//         )
+//         .then((response) => {
+//           let u = response.data;
+//           console.log(u);
+//           let id = u[0].id;
+//           console.log(id)
+//           const { cookies } = useCookies();
+//           cookies.set("id", id);
+//           location.reload();
+//         })
+//         .then(this.$router.push({ path: "/" }));
+//     },
+//   },
+// };
 </script>

@@ -162,7 +162,7 @@
                 <p
                   class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600"
                 >
-                  ¥{{ totalArray[0] }}
+                  ¥{{ totalArray }}
                 </p>
               </div>
             </div>
@@ -323,97 +323,193 @@
   </body>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
+import { useCookies } from "vue3-cookies";
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return { purchaseConf: "purchaseConf", users: "users" ,totalArray:[]};
-  },
-  mounted() {
-    this.purchaseConfs();
-    this.userData();
-    this.totalPrice();
-  },
-  unmounted() {
-    this.purchaseLeave();
-  },
-  methods: {
-    purchaseConfs: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      axios
-        .get(
-          `http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId
-        )
-        .then((response) => {
-          // console.log(response);
-          this.purchaseConf = response.data;
-          // console.log(this.purchaseConf);
-        });
-    },
-    userData: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      axios
-        .get(`http://localhost:8002/users/` + "?" + "id" + "=" + userId)
-        .then((response) => {
-          this.users = response.data[0];
-        });
-    },
-    totalPrice: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      let totalArray = [];
+const router = useRouter();
 
-      axios
-        .get(
-          `http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId
-        )
-        .then((response) => {
-          // console.log(response);
-          this.purchaseConf = response.data;
-          console.log(this.purchaseConf);
-          let total = 0;
+const purchaseConf = ref("purchaseConf");
+const users = ref("users");
+const totalArray = ref(0);
 
-          this.purchaseConf.forEach(function (item) {
-            if (item.deleted === false) {
-              total = total + item.price * item.countity;
-            }
-          });
-          console.log(total);
-          totalArray.push(total);
-          this.totalArray = totalArray;
-        });
-    },
-    purchaseHistoriesAdd: function (purchaseConf) {
-      purchaseConf.forEach((item) => {
-        let id = item.id;
-        axios
-          .post(`http://localhost:8002/purchaseHistories/`, item)
-          .then((response) => {
-            this.$router.push({ path: "/ThankYou" });
-          });
-        axios.patch(`http://localhost:8002/carts/` + id, {
-          deleted: true,
-        });
-        axios.patch(`http://localhost:8002/purchaseConf/` + id, {
-          deleted: true,
-        });
+onMounted(() => {
+  purchaseConfs();
+  userData();
+  totalPrice();
+});
+
+onUnmounted(() => {
+  purchaseLeave();
+})
+
+function purchaseConfs() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  axios
+    .get(`http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId)
+    .then((response) => {
+      // console.log(response);
+      purchaseConf.value = response.data;
+      // console.log(this.purchaseConf);
+    });
+}
+
+function userData() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  axios
+    .get(`http://localhost:8002/users/` + "?" + "id" + "=" + userId)
+    .then((response) => {
+      users.value = response.data[0];
+    });
+}
+
+function totalPrice() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  let totalArray = [];
+
+  axios
+    .get(`http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId)
+    .then((response) => {
+      // console.log(response);
+      purchaseConf.value = response.data;
+      let total = 0;
+
+      purchaseConf.value.forEach(function (item) {
+        if (item.deleted === false) {
+          total = total + item.price * item.countity;
+        }
       });
-    },
-    purchaseLeave: function () {
-      //画面遷移時に購入確認から物理削除
-      let values = this.purchaseConf.filter((item) => item.deleted === false);
-      console.log(values);
-      values.forEach((value) => {
-        let id = Number(value.id);
-        console.log(id);
-        axios
-          .delete(`http://localhost:8002/purchaseConf/` + id)
-          .then((response) => console.log(response.data));
+      console.log(total);
+      totalArray.push(total);
+      
+      console.log(totalArray[0])
+      totalArray.value =totalArray[0]
+    });
+}
+
+function purchaseHistoriesAdd() {
+  purchaseConf.value.forEach((item) => {
+    let id = item.id;
+    axios
+      .post(`http://localhost:8002/purchaseHistories/`, item)
+      .then((response) => {
+        router.push({ path: "/ThankYou" });
       });
-    },
-  },
-};
+    axios.patch(`http://localhost:8002/carts/` + id, {
+      deleted: true,
+    });
+    axios.patch(`http://localhost:8002/purchaseConf/` + id, {
+      deleted: true,
+    });
+  });
+}
+
+function purchaseLeave() {
+  //画面遷移時に購入確認から物理削除
+  let values = purchaseConf.value.filter((item) => item.deleted === false);
+  console.log(values);
+  values.forEach((value) => {
+    let id = Number(value.id);
+    console.log(id);
+    axios
+      .delete(`http://localhost:8002/purchaseConf/` + id)
+      .then((response) => console.log(response.data));
+  });
+}
+
+// export default {
+//   data() {
+//     return { purchaseConf: "purchaseConf", users: "users" ,totalArray:[]};
+//   },
+//   mounted() {
+//     this.purchaseConfs();
+//     this.userData();
+//     this.totalPrice();
+//   },
+//   unmounted() {
+//     this.purchaseLeave();
+//   },
+//   methods: {
+//     purchaseConfs: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       axios
+//         .get(
+//           `http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId
+//         )
+//         .then((response) => {
+//           // console.log(response);
+//           this.purchaseConf = response.data;
+//           // console.log(this.purchaseConf);
+//         });
+//     },
+//     userData: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       axios
+//         .get(`http://localhost:8002/users/` + "?" + "id" + "=" + userId)
+//         .then((response) => {
+//           this.users = response.data[0];
+//         });
+//     },
+//     totalPrice: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       let totalArray = [];
+
+//       axios
+//         .get(
+//           `http://localhost:8002/purchaseConf/` + "?" + "userId" + "=" + userId
+//         )
+//         .then((response) => {
+//           // console.log(response);
+//           this.purchaseConf = response.data;
+//           console.log(this.purchaseConf);
+//           let total = 0;
+
+//           this.purchaseConf.forEach(function (item) {
+//             if (item.deleted === false) {
+//               total = total + item.price * item.countity;
+//             }
+//           });
+//           console.log(total);
+//           totalArray.push(total);
+//           this.totalArray = totalArray;
+//         });
+//     },
+//     purchaseHistoriesAdd: function (purchaseConf) {
+//       purchaseConf.forEach((item) => {
+//         let id = item.id;
+//         axios
+//           .post(`http://localhost:8002/purchaseHistories/`, item)
+//           .then((response) => {
+//             this.$router.push({ path: "/ThankYou" });
+//           });
+//         axios.patch(`http://localhost:8002/carts/` + id, {
+//           deleted: true,
+//         });
+//         axios.patch(`http://localhost:8002/purchaseConf/` + id, {
+//           deleted: true,
+//         });
+//       });
+//     },
+//     purchaseLeave: function () {
+//       //画面遷移時に購入確認から物理削除
+//       let values = this.purchaseConf.filter((item) => item.deleted === false);
+//       console.log(values);
+//       values.forEach((value) => {
+//         let id = Number(value.id);
+//         console.log(id);
+//         axios
+//           .delete(`http://localhost:8002/purchaseConf/` + id)
+//           .then((response) => console.log(response.data));
+//       });
+//     },
+//   },
+// };
 </script>

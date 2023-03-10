@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-</script>
-
 <template>
   <div class="bg-white py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-lg px-4 md:px-8 mx-auto">
@@ -163,92 +159,183 @@ import { RouterLink, RouterView } from "vue-router";
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
+import { useCookies } from "vue3-cookies";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      carts: "carts",
-      item: "item",
-      totalArray: 0,
-      total: "total",
-    };
-  },
-  mounted() {
-    this.cartItems();
-    this.totalPrice();
-    // this.test;
-  },
-  methods: {
-    cartItems: function () {
-      // ログインしているユーザのカート表示
-      const user = document.cookie;
-      const userId = user.slice(3);
-      axios
-        .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
-        .then((response) => {
-          // console.log(response);
-          this.carts = response.data;
-        });
-    },
-    deleteItem: function (item) {
-      // 削除機能
-      // console.log(item);
-      let id = item.id;
-      // console.log(item.id);
-      // let id = this.carts.splice(index, 1);
+const router = useRouter();
+const carts = ref("carts");
+// const item = ref("item");
+const totalArray = ref(0);
+// const total = ref("total");
 
-      axios
-        .patch(`http://localhost:8002/carts/` + id, { deleted: true })
-        .then(location.reload());
-    },
-    clickHandlerNext: function (item, totalArray) {
-      // 数量変更+
-      item.countity++;
-      item.priceCalc = item.price * item.countity;
-      totalArray[0] = totalArray[0] + item.price;
-    },
-    clickHandlerPrev: function (item, totalArray) {
-      // 数量変更-
-      if (item.countity > 1) {
-        item.countity--;
-        item.priceCalc = item.price * item.countity;
-        totalArray[0] = totalArray[0] - item.price;
-      }
-    },
-    purchaseAdd: function (carts) {
-      carts.forEach((cart) => {
-        axios
-          .post(`http://localhost:8002/purchaseConf/`, cart)
-          .then((response) => {
-            this.$router.push({ path: "/PurchaseConf" });
-          });
+onMounted(() => {
+  cartItems();
+  totalPrice();
+});
+
+function cartItems() {
+  // ログインしているユーザのカート表示
+  const user = document.cookie;
+  const userId = Number(user.slice(3));
+  // console.log(userId);
+  axios
+    .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
+    .then((response) => {
+      // console.log(response);
+      carts.value = response.data;
+    });
+}
+
+function deleteItem(item) {
+  // 削除機能
+  //       // console.log(item);
+  let id = item.id;
+  // console.log(item.id);
+  // let id = this.carts.splice(index, 1);
+
+  axios
+    .patch(`http://localhost:8002/carts/` + id, { deleted: true })
+    .then(location.reload());
+}
+
+function clickHandlerNext(item, totalArray) {
+  // 数量変更+
+  item.countity++;
+  item.priceCalc = item.price * item.countity;
+  totalArray = totalArray + item.price;
+  console.log(totalArray)
+}
+
+function clickHandlerPrev(item, totalArray) {
+  // 数量変更-
+  if (item.countity > 1) {
+    item.countity--;
+    item.priceCalc = item.price * item.countity;
+    totalArray = totalArray - item.price;
+    console.log(totalArray)
+  }
+}
+
+function purchaseAdd(carts) {
+  carts.forEach((cart) => {
+    axios.post(`http://localhost:8002/purchaseConf/`, cart).then((response) => {
+      router.push({ path: "/PurchaseConf" });
+    });
+  });
+}
+
+function totalPrice() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  let totalArray = [];
+
+  axios
+    .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
+    .then((response) => {
+      // console.log(response);
+      carts.value = response.data;
+      console.log(carts.value)
+      let total = 0;
+
+      carts.value.forEach(function (item) {
+        if (item.deleted === false) {
+          total = total + item.price * item.countity;
+        }
       });
-    },
-    totalPrice: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      let totalArray = [];
+      console.log(total);
+      totalArray.push(total);
+      console.log(totalArray[0])
+      totalArray.value = totalArray[0];
+      console.log(totalArray.value);
+    });
+}
 
-      axios
-        .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
-        .then((response) => {
-          // console.log(response);
-          this.carts = response.data;
-          console.log(this.carts);
-          let total = 0;
+// export default {
+//   data() {
+//     return {
+//       carts: "carts",
+//       item: "item",
+//       totalArray: 0,
+//       total: "total",
+//     };
+//   },
+//   mounted() {
+//     this.cartItems();
+//     this.totalPrice();
+//     // this.test;
+//   },
+//   methods: {
+//     cartItems: function () {
+//       // ログインしているユーザのカート表示
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       axios
+//         .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
+//         .then((response) => {
+//           // console.log(response);
+//           this.carts = response.data;
+//         });
+//     },
+//     deleteItem: function (item) {
+//       // 削除機能
+//       // console.log(item);
+//       let id = item.id;
+//       // console.log(item.id);
+//       // let id = this.carts.splice(index, 1);
 
-          this.carts.forEach(function (item) {
-            if (item.deleted === false) {
-              total = total + item.price * item.countity;
-            }
-          });
-          console.log(total);
-          totalArray.push(total);
-          this.totalArray = totalArray;
-        });
-    },
-  },
-};
+//       axios
+//         .patch(`http://localhost:8002/carts/` + id, { deleted: true })
+//         .then(location.reload());
+//     },
+//     clickHandlerNext: function (item, totalArray) {
+//       // 数量変更+
+//       item.countity++;
+//       item.priceCalc = item.price * item.countity;
+//       totalArray[0] = totalArray[0] + item.price;
+//     },
+//     clickHandlerPrev: function (item, totalArray) {
+//       // 数量変更-
+//       if (item.countity > 1) {
+//         item.countity--;
+//         item.priceCalc = item.price * item.countity;
+//         totalArray[0] = totalArray[0] - item.price;
+//       }
+//     },
+//     purchaseAdd: function (carts) {
+//       carts.forEach((cart) => {
+//         axios
+//           .post(`http://localhost:8002/purchaseConf/`, cart)
+//           .then((response) => {
+//             this.$router.push({ path: "/PurchaseConf" });
+//           });
+//       });
+//     },
+//     totalPrice: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       let totalArray = [];
+
+//       axios
+//         .get(`http://localhost:8002/carts/` + "?" + "userId" + "=" + userId)
+//         .then((response) => {
+//           // console.log(response);
+//           this.carts = response.data;
+//           console.log(this.carts);
+//           let total = 0;
+
+//           this.carts.forEach(function (item) {
+//             if (item.deleted === false) {
+//               total = total + item.price * item.countity;
+//             }
+//           });
+//           console.log(total);
+//           totalArray.push(total);
+//           this.totalArray = totalArray;
+//         });
+//     },
+//   },
+// };
 </script>
