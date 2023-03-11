@@ -94,16 +94,18 @@
 // import VueCookies from "vue3-cookies";
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-// const user = ref("");
-// const password = ref("");
 const router = useRouter()
 const user = ref({
   email: "",
   password: "",
 });
+
+// onMounted(()=> {
+//   signin()
+// })
 
 function signin() {
   axios
