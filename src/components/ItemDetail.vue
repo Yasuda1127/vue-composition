@@ -168,128 +168,131 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import { RouterLink, RouterView } from "vue-router";
 import { ref, onMounted } from "vue";
-import {useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
-// const item = ref("item");
-// const userId = ref(Number(""));
-// const count = ref(1);
-// const price = "price";
-// const router = useRouter()
+const item = ref("item");
+const userId = ref(Number(""));
+const count = ref(1);
+// const price = ref("price");
+const priceCalc = ref(0);
+const route = useRoute();
+const router = useRouter();
 
-// onMounted(() => {
-//   itemDetail();
-// });
+const id = route.params.id;
 
-// function itemDetail() {
-//   item.value = axios
-//     .get(`http://localhost:8002/items/${router.params.id}`)
-//     .then((response) => {
-//       console.log(response.data);
-//       // this.priceCalc = this.item.prices;
-//       // console.log(this.item.prices);
-//     });
-// }
+onMounted(() => {
+  itemDetail();
+});
 
-// function cartAdd() {
-//   const user = document.cookie;
-//   const userId = user.slice(3);
-//   console.log(userId);
-//   const carts = {
-//     userId: Number(userId),
-//     imageUrl: this.item.imageUrl,
-//     name: this.item.name,
-//     category: this.item.category,
-//     flavor: this.item.flavor,
-//     price: this.item.price,
-//     priceCalc: this.priceCalc,
-//     description: this.item.description,
-//     content: this.item.content,
-//     countity: this.count,
-//     deleted: false,
-//   };
+function itemDetail() {
+  axios.get(`http://localhost:8002/items/` + id).then((response) => {
+    console.log(response.data);
+    item.value = response.data;
+    priceCalc.value = item.value.prices;
+    // console.log(this.item.prices);
+  });
+}
 
-//   axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
-//     let u = response.data;
-//     console.log(u);
-//     router.push({ path: "/CartItems" });
-//   });
-// }
+function cartAdd() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  console.log(userId);
+  const carts = {
+    userId: Number(userId),
+    imageUrl: item.value.imageUrl,
+    name: item.value.name,
+    category: item.value.category,
+    flavor: item.value.flavor,
+    price: item.value.price,
+    priceCalc: priceCalc.value,
+    description: item.value.description,
+    content: item.value.content,
+    countity: count.value,
+    deleted: false,
+  };
 
-// function clickHandlerNext() {
-//   this.count++;
-//   console.log(this.item.prices);
-//   this.priceCalc = this.priceCalc + this.item.prices;
-// }
+  axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
+    let u = response.data;
+    console.log(u);
+    router.push({ path: "/CartItems" });
+  });
+}
 
-// function clickHandlerPrev() {
-//   if (this.count > 1) {
-//     this.count--;
-//     console.log(this.item.prices);
-//     this.priceCalc = this.priceCalc - this.item.prices;
-//   }
-// }
+function clickHandlerNext() {
+  count.value++;
+  console.log(item.value.prices);
+  priceCalc.value = priceCalc.value + item.value.prices;
+}
 
-export default {
-  data() {
-    return {
-      item: "items",
-      userId: Number(""),
-      count: 1,
-      price: "price",
-    };
-  },
-  mounted() {
-    this.itemDetail();
-  },
-  methods: {
-    itemDetail: function () {
-      axios
-        .get(`http://localhost:8002/items/${this.$route.params.id}`)
-        .then((response) => {
-          this.item = response.data;
-          this.priceCalc = this.item.prices;
-          console.log(this.item.prices);
-        });
-    },
-    cartAdd: function () {
-      const user = document.cookie;
-      const userId = user.slice(3);
-      console.log(userId);
-      const carts = {
-        userId: Number(userId),
-        imageUrl: this.item.imageUrl,
-        name: this.item.name,
-        category: this.item.category,
-        flavor: this.item.flavor,
-        price: this.item.price,
-        priceCalc: this.priceCalc,
-        description: this.item.description,
-        content: this.item.content,
-        countity: this.count,
-        deleted: false,
-      };
+function clickHandlerPrev() {
+  if (count.value > 1) {
+    count.value--;
+    console.log(item.value.prices);
+    priceCalc.value = priceCalc.value - item.value.prices;
+  }
+}
 
-      axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
-        let u = response.data;
-        this.$router.push({ path: "/CartItems" });
-      });
-    },
-    clickHandlerNext: function () {
-      this.count++;
-      console.log(this.item.prices);
-      this.priceCalc = this.priceCalc + this.item.prices;
-    },
-    clickHandlerPrev: function () {
-      if (this.count > 1) {
-        this.count--;
-        console.log(this.item.prices);
-        this.priceCalc = this.priceCalc - this.item.prices;
-      }
-    },
-  },
-};
+// export default {
+//   data() {
+//     return {
+//       item: "items",
+//       userId: Number(""),
+//       count: 1,
+//       price: "price",
+//     };
+//   },
+//   mounted() {
+//     this.itemDetail();
+//   },
+//   methods: {
+//     itemDetail: function () {
+//       axios
+//         .get(`http://localhost:8002/items/${this.$route.params.id}`)
+//         .then((response) => {
+//           this.item = response.data;
+//           this.priceCalc = this.item.prices;
+//           console.log(this.item.prices);
+//         });
+//     },
+//     cartAdd: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       console.log(userId);
+//       const carts = {
+//         userId: Number(userId),
+//         imageUrl: this.item.imageUrl,
+//         name: this.item.name,
+//         category: this.item.category,
+//         flavor: this.item.flavor,
+//         price: this.item.price,
+//         priceCalc: this.priceCalc,
+//         description: this.item.description,
+//         content: this.item.content,
+//         countity: this.count,
+//         deleted: false,
+//       };
+
+//       axios.post(`http://localhost:8002/carts/`, carts).then((response) => {
+//         let u = response.data;
+//         this.$router.push({ path: "/CartItems" });
+//       });
+//     },
+//     clickHandlerNext: function () {
+//       this.count++;
+//       console.log(this.item.prices);
+//       this.priceCalc = this.priceCalc + this.item.prices;
+//     },
+//     clickHandlerPrev: function () {
+//       if (this.count > 1) {
+//         this.count--;
+//         console.log(this.item.prices);
+//         this.priceCalc = this.priceCalc - this.item.prices;
+//       }
+//     },
+//   },
+// };
 </script>

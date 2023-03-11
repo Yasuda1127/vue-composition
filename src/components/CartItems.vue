@@ -85,13 +85,13 @@
 
                   <div class="flex flex-col border-l divide-y">
                     <button
-                      v-on:click.prevent="clickHandlerNext(item, totalArray)"
+                      v-on:click.prevent="clickHandlerNext(item, totalArray2)"
                       class="w-6 flex justify-center items-center flex-1 bg-white hover:bg-gray-100 active:bg-gray-200 leading-none select-none transition duration-100"
                     >
                       +
                     </button>
                     <button
-                      v-on:click.prevent="clickHandlerPrev(item, totalArray)"
+                      v-on:click.prevent="clickHandlerPrev(item, totalArray2)"
                       class="w-6 flex justify-center items-center flex-1 bg-white hover:bg-gray-100 active:bg-gray-200 leading-none select-none transition duration-100"
                     >
                       -
@@ -140,7 +140,7 @@
             <span class="text-lg font-bold">Total</span>
 
             <span class="flex flex-col items-end">
-              <span class="text-lg font-bold">{{ totalArray[0] }}</span>
+              <span class="text-lg font-bold">{{ totalArray2 }}</span>
               <span class="text-gray-500 text-sm">including VAT</span>
             </span>
           </div>
@@ -168,7 +168,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const carts = ref("carts");
 // const item = ref("item");
-const totalArray = ref(0);
+const totalArray2 = ref(0);
 // const total = ref("total");
 
 onMounted(() => {
@@ -201,21 +201,21 @@ function deleteItem(item) {
     .then(location.reload());
 }
 
-function clickHandlerNext(item, totalArray) {
+function clickHandlerNext(item, totalArray2) {
   // 数量変更+
   item.countity++;
   item.priceCalc = item.price * item.countity;
-  totalArray = totalArray + item.price;
-  console.log(totalArray)
+  this.totalArray2 = totalArray2 + item.price;
+  console.log(this.totalArray2);
 }
 
-function clickHandlerPrev(item, totalArray) {
+function clickHandlerPrev(item, totalArray2) {
   // 数量変更-
   if (item.countity > 1) {
     item.countity--;
     item.priceCalc = item.price * item.countity;
-    totalArray = totalArray - item.price;
-    console.log(totalArray)
+    this.totalArray2 = totalArray2 - item.price;
+    console.log(this.totalArray2);
   }
 }
 
@@ -237,7 +237,7 @@ function totalPrice() {
     .then((response) => {
       // console.log(response);
       carts.value = response.data;
-      console.log(carts.value)
+      console.log(carts.value);
       let total = 0;
 
       carts.value.forEach(function (item) {
@@ -245,11 +245,11 @@ function totalPrice() {
           total = total + item.price * item.countity;
         }
       });
-      console.log(total);
+
       totalArray.push(total);
-      console.log(totalArray[0])
-      totalArray.value = totalArray[0];
-      console.log(totalArray.value);
+
+      totalArray2.value = totalArray[0];
+      console.log(totalArray2.value);
     });
 }
 

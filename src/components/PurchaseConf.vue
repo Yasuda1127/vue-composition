@@ -162,7 +162,7 @@
                 <p
                   class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600"
                 >
-                  ¥{{ totalArray }}
+                  ¥{{ totalArray2 }}
                 </p>
               </div>
             </div>
@@ -333,7 +333,7 @@ const router = useRouter();
 
 const purchaseConf = ref("purchaseConf");
 const users = ref("users");
-const totalArray = ref(0);
+const totalArray2 = ref(0);
 
 onMounted(() => {
   purchaseConfs();
@@ -343,7 +343,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   purchaseLeave();
-})
+});
 
 function purchaseConfs() {
   const user = document.cookie;
@@ -386,9 +386,9 @@ function totalPrice() {
       });
       console.log(total);
       totalArray.push(total);
-      
-      console.log(totalArray[0])
-      totalArray.value =totalArray[0]
+      console.log(totalArray[0]);
+      totalArray2.value = totalArray[0];
+      console.log(totalArray2.value)
     });
 }
 
