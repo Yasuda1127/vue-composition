@@ -388,7 +388,7 @@ function totalPrice() {
       totalArray.push(total);
       console.log(totalArray[0]);
       totalArray2.value = totalArray[0];
-      console.log(totalArray2.value)
+      console.log(totalArray2.value);
     });
 }
 

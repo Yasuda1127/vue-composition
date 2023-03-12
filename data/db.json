@@ -35,9 +35,46 @@
     }
   ],
   "carts": [
+    {
+      "userId": 2,
+      "imageUrl": "/images/impact_whey_protein.jpg",
+      "name": "Impact ホエイ プロテイン",
+      "category": "whey",
+      "flavor": [
+        "チョコ",
+        "ミルクティー",
+        "抹茶"
+      ],
+      "price": 1990,
+      "priceCalc": 9950,
+      "description": "1食あたりタンパク質を21g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。乳牛の乳から必要な成分を精製蒸留した後に乾燥。3種類のフレーバーからお選びください。",
+      "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 1.0g, タンパク質: 21g, 食塩相当量: 0.13g",
+      "countity": 5,
+      "deleted": true,
+      "id": 1
+    }
   ],
   "purchaseConf": [],
-  "purchaseHistories": [],
+  "purchaseHistories": [
+    {
+      "userId": 2,
+      "imageUrl": "/images/impact_whey_protein.jpg",
+      "name": "Impact ホエイ プロテイン",
+      "category": "whey",
+      "flavor": [
+        "チョコ",
+        "ミルクティー",
+        "抹茶"
+      ],
+      "price": 1990,
+      "priceCalc": 19900,
+      "description": "1食あたりタンパク質を21g含有。毎日のタンパク質摂取に最高品質のプロテインをどうぞ。乳牛の乳から必要な成分を精製蒸留した後に乾燥。3種類のフレーバーからお選びください。",
+      "content": "エネルギー（1食あたり）: 103kcal, 脂質: 1.9g, 炭水化物: 1.0g, タンパク質: 21g, 食塩相当量: 0.13g",
+      "countity": 10,
+      "deleted": false,
+      "id": 1
+    }
+  ],
   "items": [
     {
       "id": 1,

@@ -90,35 +90,23 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // import VueCookies from "vue3-cookies";
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 const user = ref({
   email: "",
   password: "",
 });
 
-// onMounted(()=> {
-//   signin()
-// })
-
 function signin() {
   axios
     .get(
-      "http://localhost:8002/users/" +
-        "?" +
-        "email" +
-        "=" +
-        user.value.email +
-        "&" +
-        "password" +
-        "=" +
-        user.value.password
+      `http://localhost:8002/users?email=${user.value.email}&password=${user.value.password}`
     )
     .then((response) => {
       let u = response.data;
@@ -131,7 +119,6 @@ function signin() {
     })
     .then(router.push({ path: "/" }));
 }
-
 
 // export default {
 //   data() {
