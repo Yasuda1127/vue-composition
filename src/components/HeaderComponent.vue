@@ -43,57 +43,84 @@
           >UserEdit</RouterLink
         >
       </nav>
-      <form @submit.prevent="logout" method="POST" v-show="isVisibleOut()">
-        <button>LogOut</button>
+      <form
+        @submit.prevent="logout"
+        method="POST"
+        v-show="isVisibleOut()"
+        to="/TheWelcome"
+      >
+        <button @click="refresh">LogOut</button>
       </form>
     </div>
   </header>
 </template>
 
-<script>
+<script setup>
 import { useCookies } from "vue3-cookies";
-import axios from "axios";
-export default {
-  data() {
-    return {
-      userId: true,
-      userId2: false,
-    };
-  },
-  mounted() {
-    this.isVisible();
-    this.isVisibleOut();
-  },
-  methods: {
-    logout: function () {
-      const { cookies } = useCookies();
-      cookies.remove("id");
-      this.$router.push({ path: "/" });
-    },
-    isVisible: function () {
-      // if (document.cookie.slice(3) === "") {
-      //   toggle: true;
-      // } else {
-      //   toggle = false;
-      // }
-      const user = document.cookie;
-      // console.log(document.cookie);
-      const userId = user.slice(3);
-      // console.log(userId);
-      return userId === "";
-    },
-    isVisibleOut: function () {
-      const user = document.cookie;
-      // console.log(document.cookie);
-      const userId2 = user.slice(3);
-      return userId2 !== "";
-    },
-  },
-  // watch: {
-  //   $route() {
-  //     location.reload()
-  //     this.$router.push({ path: "/ItemList" });
-  //   },
-  // },
-};
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const userId = ref(true);
+const userId2 = ref(false);
+
+onMounted(() => {
+  isVisible();
+  isVisibleOut();
+});
+
+function logout() {
+  const { cookies } = useCookies();
+  cookies.remove("id");
+  router.push({ path: "/" });
+}
+
+function isVisible() {
+  const user = document.cookie;
+  const userId = user.slice(3);
+  return userId === "";
+}
+
+function isVisibleOut() {
+  const user = document.cookie;
+  // console.log(document.cookie);
+  const userId2 = user.slice(3);
+  return userId2 !== "";
+}
+
+function refresh() {
+  location.reload();
+}
+// import { useCookies } from "vue3-cookies";
+// export default {
+//   data() {
+//     return {
+//       userId: true,
+//       userId2: false,
+//     };
+//   },
+//   mounted() {
+//     this.isVisible();
+//     this.isVisibleOut();
+//   },
+//   methods: {
+//     logout: function () {
+//       const { cookies } = useCookies();
+//       cookies.remove("id");
+//       this.$router.push({ path: "/" });
+//     },
+//     isVisible: function () {
+//       const user = document.cookie;
+//       const userId = user.slice(3);
+//       return userId === "";
+//     },
+//     isVisibleOut: function () {
+//       const user = document.cookie;
+//       // console.log(document.cookie);
+//       const userId2 = user.slice(3);
+//       return userId2 !== "";
+//     },
+//   },
+// };
 </script>
